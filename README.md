@@ -1,4 +1,6 @@
 # [gulp](https://github.com/creative/gulp-tinypng)-tinypng
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FEinfachAleks%2Fgulp-tiny.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FEinfachAleks%2Fgulp-tiny?ref=badge_shield)
+
 
 Image optimization with [Gulp](https://github.com/gulpjs/gulp) and [TinyPNG](https://tinypng.com/)
 
@@ -67,3 +69,6 @@ log: false
 MIT © [EinfachAleks](https://einfach-aleks.com)
 
 Original MIT © [Gaurav Jassal](http://gaurav.jassal.me)
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FEinfachAleks%2Fgulp-tiny.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FEinfachAleks%2Fgulp-tiny?ref=badge_large)
