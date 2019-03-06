@@ -16,15 +16,15 @@ npm i --save-dev gulp-tinypng gulpjs/gulp#4.0
 ## Example
 ```js
 var	gulp = require('gulp'),
-    tiny = require('gulp-tiny'),
-    paths=  {
-	        input: 'img/**/*.{png,jpg,jpeg}',
-	        output: 'TinyImg'
+	tiny = require('gulp-tiny'),
+	paths = {
+		input: 'img/**/*.{png,jpg,jpeg}',
+		output: 'TinyImg'
 };
  
 var Api_Key = [
-	    '8FiQFj9oWwEyTBHMMwxjvuYNx05Fphk2',
-	    '08gBPsFKxDDljaEDwlUhxxEhn6811pCp'
+	'8FiQFj9oWwEyTBHMMwxjvuYNx05Fphk2',
+	'08gBPsFKxDDljaEDwlUhxxEhn6811pCp'
 ];
  
 gulp.task('tiny', function () {
