@@ -1,13 +1,12 @@
 var gulp = require('gulp'),
 	tiny = require('./index'),
 	paths=  {
-		input: 'img/**/*.{png,jpg,jpeg}',
+		input: 'img/**/*.{png,PNG,jpg.JPG,jpeg,JPEG}',
 		output: 'TinyImg'
 	};
 
 var Api_Key = [
-	'8FiQFj9oWwEyTBHMMwxjvuYNx05Fphk2',
-	'08gBPsFKxDDljaEDwlUhxxEhn6811pCp'
+	'8FiQFj9oWwEyTBHMMwxjvuYNx05Fphk2'
 ];
 
 gulp.task('tiny', function () {
