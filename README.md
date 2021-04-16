@@ -1,5 +1,5 @@
 # [gulp](https://github.com/creative/gulp-tinypng)-tinypng
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FEinfachAleks%2Fgulp-tiny.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FEinfachAleks%2Fgulp-tiny?ref=badge_shield)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FEinfachAleks%2Fgulp-tiny.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FEinfachAleks%2Fgulp-tiny?ref=badge_shield) [![wakatime](https://wakatime.com/badge/github/EinfachAleks/gulp-tiny.svg)](https://wakatime.com/badge/github/EinfachAleks/gulp-tiny)
 
 Image optimization with [Gulp](https://github.com/gulpjs/gulp) and [TinyPNG](https://tinypng.com/)
 
