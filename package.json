@@ -1,50 +1,58 @@
 {
-  "name": "gulp-tiny",
-  "version": "1.0",
-  "description": "Image optimization with Gulp and TinyPNG",
-  "main": "index.js",
-  "repository": "einfachaleks/gulp-tinypng",
-  "scripts": {
-    "default": "tiny"
-  },
-  "files": [
-    "index.js"
-  ],
-  "developer": {
-    "name": "EinfachAleks",
-    "email": "aleks@einfach-aleks.com",
-    "url": "https://einfach-aleks.com"
-  },
-  "author": {
-    "name": "Gaurav Jassal",
-    "email": "gaurav@jassal.me",
-    "url": "http://gaurav.jassal.me"
-  },
-  "keywords": [
-    "gulpplugin",
-    "tinypng",
-    "image",
-    "img",
-    "picture",
-    "photo",
-    "minify",
-    "minifier",
-    "compress",
-    "png",
-    "tiny"
-  ],
-  "engines": {
-    "node": ">=0.10.0"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "gulp": "4.0.2",
-    "gulp-util": "^2.2.20",
-    "md5": "^2.1.0",
-    "mkdirp": "^0.3.5",
-    "pretty-bytes": "^0.1.2",
-    "request": "^2.31.0",
-    "rmdir": "^1.2.0",
-    "through2": "^0.4.2"
-  }
+	"name": "gulp-tiny",
+	"version": "2.0.0",
+	"description": "Image optimization with Gulp and TinyPNG",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"repository": "einfachaleks/gulp-tinypng",
+	"scripts": {
+		"build": "tsc",
+		"prepublishOnly": "npm run build",
+		"clean": "rm -rf dist",
+		"tiny": "gulp tiny",
+		"default": "gulp"
+	},
+	"files": [
+		"dist"
+	],
+	"developer": {
+		"name": "EinfachAleks",
+		"email": "aleks@einfach-aleks.com",
+		"url": "https://einfach-aleks.com"
+	},
+	"author": {
+		"name": "Gaurav Jassal",
+		"email": "gaurav@jassal.me",
+		"url": "http://gaurav.jassal.me"
+	},
+	"keywords": [
+		"gulpplugin",
+		"tinypng",
+		"image",
+		"img",
+		"picture",
+		"photo",
+		"minify",
+		"minifier",
+		"compress",
+		"png",
+		"tiny"
+	],
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"license": "MIT",
+	"dependencies": {
+		"ansi-colors": "^4.1.3",
+		"fancy-log": "^2.0.0",
+		"plugin-error": "^2.0.1"
+	},
+	"devDependencies": {
+		"@types/fancy-log": "^2.0.2",
+		"@types/node": "^22.9.0",
+		"@types/vinyl": "^2.0.12",
+		"gulp": "^5.0.0",
+		"typescript": "^5.6.3",
+		"vinyl": "^3.0.0"
+	}
 }
