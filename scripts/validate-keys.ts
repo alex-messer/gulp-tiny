@@ -34,7 +34,7 @@ class Spinner {
 interface ApiKeysFile {
     generatedAt: string;
     status: 'searching' | 'validating' | 'complete';
-    candidates: string[];
+    candidates?: string[];
     validKeys: string[];
 }
 
@@ -95,7 +95,7 @@ async function validateKey(key: string): Promise<'valid' | 'exhausted' | 'invali
 async function main(): Promise<void> {
     const existing = loadApiKeys();
 
-    const candidates = [...new Set(existing.candidates)];
+    const candidates = [...new Set(existing.candidates ?? [])];
     if (candidates.length === 0) {
         console.error(`No candidates found in ${API_KEYS_PATH}.\nRun "npm run search-keys" first.`);
         process.exit(1);
@@ -143,7 +143,11 @@ async function main(): Promise<void> {
         await sleep(VALIDATION_DELAY_MS);
     }
 
-    writeApiKeys({ ...existing, status: 'complete', candidates, validKeys });
+    // Final write: clean file with only valid keys — candidates removed
+    fs.writeFileSync(
+        API_KEYS_PATH,
+        JSON.stringify({ generatedAt: new Date().toISOString(), status: 'complete', validKeys }, null, 2)
+    );
 
     console.log('\n──────────────────────────────────────');
     console.log(`Valid (quota remaining): ${validKeys.length - alreadyValid.size}`);
