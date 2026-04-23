@@ -4,7 +4,7 @@
 	"description": "Image optimization with Gulp and TinyPNG",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
-	"repository": "einfachaleks/gulp-tinypng",
+	"repository": "alex-messer/gulp-tiny",
 	"scripts": {
 		"build": "tsc",
 		"prepublishOnly": "npm run build",
@@ -13,15 +13,16 @@
 		"default": "gulp",
 		"test": "vitest run",
 		"test:watch": "vitest",
-		"coverage": "vitest run --coverage"
+		"coverage": "vitest run --coverage",
+		"search-keys": "npx tsc -p tsconfig.scripts.json && node dist-scripts/search-leaked-keys.js",
+		"prepare": "husky"
 	},
 	"files": [
 		"dist"
 	],
 	"developer": {
-		"name": "EinfachAleks",
-		"email": "aleks@einfach-aleks.com",
-		"url": "https://einfach-aleks.com"
+		"name": "alex-messer",
+		"url": "https://github.com/alex-messer"
 	},
 	"author": {
 		"name": "Gaurav Jassal",
@@ -42,7 +43,7 @@
 		"tiny"
 	],
 	"engines": {
-		"node": ">=18.0.0"
+		"node": ">=24.0.0"
 	},
 	"license": "MIT",
 	"dependencies": {
@@ -51,11 +52,15 @@
 		"plugin-error": "^2.0.1"
 	},
 	"devDependencies": {
+		"@commitlint/cli": "^20.5.0",
+		"@commitlint/config-conventional": "^20.5.0",
 		"@types/fancy-log": "^2.0.2",
 		"@types/node": "^25.6.0",
 		"@types/vinyl": "^2.0.12",
 		"@vitest/coverage-v8": "^4.1.5",
+		"dotenv": "^17.4.2",
 		"gulp": "^5.0.1",
+		"husky": "^9.1.7",
 		"typescript": "^6.0.3",
 		"vinyl": "^3.0.1",
 		"vitest": "^4.1.5"

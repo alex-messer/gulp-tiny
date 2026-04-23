@@ -1,3 +1,7 @@
+require('dotenv').config({ path: '.env', quiet: true });
+require('dotenv').config({ path: '.env.local', override: true, quiet: true });
+
+const fs   = require('node:fs');
 const gulp = require('gulp');
 const tiny = require('./dist');
 
@@ -6,21 +10,31 @@ const paths = {
 	output: 'TinyImg',
 };
 
-const apiKeys = [
-	'8FiQFj9oWwEyTBHMMwxjvuYNx05Fphk2',
-	'K9SK0kgRhqcl56bfDc2XKnC25j0f6qJr',
-	'n69cSYDq5W98LtmpcXw8p1qHHdYQQy3M',
-	'nSGk2FyphVXCrRY42pnPfTTn5QmSpkx5',
-	'fZ2xCNQ76qYVvfPXfDx99jKSypHXFtZc',
-	'xpV5SZLs0WvJGWNzkP7sSN3Slj87TsgF',
-	'G2MZ4xMKnt8DdwTW426jTyWBM6NdVXgs',
-	'KDKRsfNw32Rzz3XvXRFkrrpSVrKymhjm',
-	'1MC4FzW84YdsfHHlxGRTNfQ90TSfRb83',
-	'8wjs4NP5Y3NP9j4NBxtTrp6JBSsvnKTK',
-	'bjtGNk2NMQ8jG3Wr1Hc4RzQDk0s36xFP',
-	'WzyZcc6Y3h7FsF3CtJbLTyysCwwkv3vb',
-	'mgnLG7Z1Y8j5gfr7LCd53shWLqYfRV1d',
-];
+// 1) Eigene Keys aus Umgebungsvariable (Komma-getrennt)
+const envKeys = (process.env.TINYPNG_KEYS || '')
+	.split(',')
+	.map(k => k.trim())
+	.filter(Boolean);
+
+// 2) Gefundene Keys aus api-keys.json (temporär, gitignored)
+let discoveredKeys = [];
+try {
+	const data = JSON.parse(fs.readFileSync('api-keys.json', 'utf8'));
+	discoveredKeys = Array.isArray(data.keys) ? data.keys : [];
+} catch { /* Datei existiert nicht – kein Problem */ }
+
+// Zusammenführen, deduplizieren
+const apiKeys = [...new Set([...envKeys, ...discoveredKeys])];
+
+if (apiKeys.length === 0) {
+	console.error(
+		'Keine TinyPNG API-Keys gefunden.\n' +
+		'Optionen:\n' +
+		'  1. TINYPNG_KEYS=key1,key2 in .env.local eintragen\n' +
+		'  2. npm run search-keys ausführen (generiert api-keys.json)'
+	);
+	process.exit(1);
+}
 
 gulp.task('tiny', function () {
 	return gulp

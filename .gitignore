@@ -3,10 +3,15 @@ node_modules/
 .vscode/
 
 dist/
+dist-scripts/
 cache/
 img/
 TinyImg/
+coverage/
 
 *.log
 .DS_Store
-coverage/
+.env.local
+.env
+api-keys.json
+leaked-keys-report.json
