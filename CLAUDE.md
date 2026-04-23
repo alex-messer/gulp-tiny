@@ -10,6 +10,11 @@
 4. Push to `origin/main` immediately after committing
 5. Local state and remote must always be 100% in sync
 
+## Dependency changes
+- After adding/removing any dependency, run `npm install` to regenerate `package-lock.json`
+- Commit the updated lock file together with the `package.json` change
+- When removing a dependency, also remove all references (configs, imports, README, scripts)
+
 ## Test Scripts
 - `npm test` — run the full test suite (node:test)
 - `npm run coverage` — run tests with coverage report

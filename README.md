@@ -184,9 +184,9 @@ restarts. The cache file is deleted automatically on successful completion.
 
 ```bash
 npm run build           # tsc → dist/
-npm test                # vitest
-npm run test:watch      # vitest watch mode
-npm run coverage        # vitest + v8 coverage (80 % threshold)
+npm test                # node:test
+npm run test:watch      # node:test watch mode
+npm run coverage        # node:test + built-in coverage
 
 npm run search-keys     # search GitHub for exposed TinyPNG keys
 
