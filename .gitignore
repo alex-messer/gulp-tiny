@@ -1,6 +1,18 @@
 node_modules/
 .idea/
+.vscode/
 
+dist/
+dist-scripts/
 cache/
 img/
 TinyImg/
+coverage/
+
+*.log
+.DS_Store
+.env.local
+.env
+api-keys.json
+leaked-keys-report.json
+.search-cache.json
