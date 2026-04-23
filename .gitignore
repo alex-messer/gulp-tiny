@@ -9,3 +9,4 @@ TinyImg/
 
 *.log
 .DS_Store
+coverage/
