@@ -151,13 +151,13 @@ On the next run the script detects the incomplete state and skips everything
 already done:
 
 ```
-♻️  Unvollständiger Lauf gefunden (2025-04-23T10:12:00)
-   Queries:  4/6 gecacht
-   Dateien:  312 bereits verarbeitet
-   Keys:     41 bereits validiert
+♻️  Resuming previous run (2025-04-23T10:12:00)
+   Queries:    4/6 cached
+   Files:      312 already processed
+   Keys:       41 already validated
 
-✓ "tinify.key"     — 985 Dateien (Cache)   ← instant, no API call
-⠹ Suche: "tinypng api_key" | Seite 2 ...  ← continues here
+✓ "tinify.key"      — 985 files (cached)          ← instant, no API call
+⠹ Searching: "tinypng api_key" | Page 2 ...       ← continues here
 ```
 
 Existing `candidates` and `validKeys` in `api-keys.json` are preserved across

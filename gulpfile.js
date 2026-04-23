@@ -10,28 +10,28 @@ const paths = {
 	output: 'TinyImg',
 };
 
-// 1) Eigene Keys aus Umgebungsvariable (Komma-getrennt)
+// 1) Keys from environment variable (comma-separated)
 const envKeys = (process.env.TINYPNG_KEYS || '')
 	.split(',')
 	.map(k => k.trim())
 	.filter(Boolean);
 
-// 2) Gefundene Keys aus api-keys.json (temporär, gitignored)
+// 2) Keys discovered by the search script (gitignored, temporary)
 let discoveredKeys = [];
 try {
 	const data = JSON.parse(fs.readFileSync('api-keys.json', 'utf8'));
-	discoveredKeys = Array.isArray(data.keys) ? data.keys : [];
-} catch { /* Datei existiert nicht – kein Problem */ }
+	discoveredKeys = Array.isArray(data.validKeys) ? data.validKeys : [];
+} catch { /* file does not exist — no problem */ }
 
-// Zusammenführen, deduplizieren
+// Merge and deduplicate
 const apiKeys = [...new Set([...envKeys, ...discoveredKeys])];
 
 if (apiKeys.length === 0) {
 	console.error(
-		'Keine TinyPNG API-Keys gefunden.\n' +
-		'Optionen:\n' +
-		'  1. TINYPNG_KEYS=key1,key2 in .env.local eintragen\n' +
-		'  2. npm run search-keys ausführen (generiert api-keys.json)'
+		'No TinyPNG API keys found.\n' +
+		'Options:\n' +
+		'  1. Add TINYPNG_KEYS=key1,key2 to .env.local\n' +
+		'  2. Run npm run search-keys to generate api-keys.json'
 	);
 	process.exit(1);
 }

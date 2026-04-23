@@ -189,18 +189,18 @@ async function githubGet<T>(path: string, token: string): Promise<T> {
             if (retryAfter) waitMs = parseInt(retryAfter, 10) * 1000;
             else if (reset) waitMs = Math.max(0, parseInt(reset, 10) * 1000 - Date.now()) + 1000;
             const saved = spinner.text;
-            spinner.text = `${saved} — Rate limit, warte ${Math.round(waitMs / 1000)}s`;
+            spinner.text = `${saved} — rate limited, waiting ${Math.round(waitMs / 1000)}s`;
             await sleep(waitMs);
             spinner.text = saved;
             continue;
         }
 
-        if (!response.ok) throw new Error(`GitHub API Fehler ${response.status} für ${path}`);
+        if (!response.ok) throw new Error(`GitHub API error ${response.status} for ${path}`);
 
         if (remaining && parseInt(remaining, 10) === 0 && reset) {
             const waitMs = Math.max(0, parseInt(reset, 10) * 1000 - Date.now()) + 1000;
             const saved = spinner.text;
-            spinner.text = `${saved} — Rate limit erschöpft, warte ${Math.round(waitMs / 1000)}s`;
+            spinner.text = `${saved} — rate limit exhausted, waiting ${Math.round(waitMs / 1000)}s`;
             await sleep(waitMs);
             spinner.text = saved;
         }
@@ -252,7 +252,7 @@ async function searchQuery(
         try {
             data = await githubGet<GitHubCodeSearchResponse>(path, token);
         } catch (err) {
-            process.stdout.write(`\n  Fehler auf Seite ${page}: ${err}\n`);
+            process.stdout.write(`\n  Error on page ${page}: ${err}\n`);
             break;
         }
 
@@ -299,9 +299,9 @@ async function main(): Promise<void> {
     const token = process.env.GITHUB_TOKEN;
     if (!token) {
         console.error(
-            'Fehler: GITHUB_TOKEN ist nicht gesetzt.\n' +
-            'Token erstellen: https://github.com/settings/tokens  (Scope: public_repo)\n\n' +
-            '  export GITHUB_TOKEN=ghp_deinToken\n' +
+            'Error: GITHUB_TOKEN is not set.\n' +
+            'Create a token at https://github.com/settings/tokens  (scope: public_repo)\n\n' +
+            '  export GITHUB_TOKEN=ghp_yourToken\n' +
             '  npm run search-keys'
         );
         process.exit(1);
@@ -322,21 +322,21 @@ async function main(): Promise<void> {
         const nQueries   = Object.keys(cache.completedQueries).length;
         const nFiles     = Object.keys(cache.processedFiles).length;
         const nValidated = Object.keys(cache.validatedKeys).length;
-        console.log(`\n♻️  Unvollständiger Lauf gefunden (${cache.startedAt})`);
-        console.log(`   Queries: ${nQueries}/${SEARCH_QUERIES.length} gecacht`);
-        console.log(`   Dateien: ${nFiles} bereits verarbeitet`);
-        console.log(`   Keys:    ${nValidated} bereits validiert`);
-        console.log(`   Candidates: ${previousApiKeys!.candidates.length} | Valide: ${previousApiKeys!.validKeys.length}`);
-        console.log(`\n   Überspringe bereits erledigte Schritte...\n`);
+        console.log(`\n♻️  Resuming previous run (${cache.startedAt})`);
+        console.log(`   Queries:    ${nQueries}/${SEARCH_QUERIES.length} cached`);
+        console.log(`   Files:      ${nFiles} already processed`);
+        console.log(`   Keys:       ${nValidated} already validated`);
+        console.log(`   Candidates: ${previousApiKeys!.candidates.length} | Valid: ${previousApiKeys!.validKeys.length}`);
+        console.log(`\n   Skipping completed steps...\n`);
         // Preserve existing api-keys.json, just reset status to searching
         writeApiKeys({ ...previousApiKeys!, status: 'searching' });
     } else {
         if (previousApiKeys?.status === 'complete') {
-            console.log(`✓ Vorheriger Lauf war vollständig — starte neu\n`);
+            console.log(`✓ Previous run completed — starting fresh\n`);
         }
         cache = emptyCache();
         writeApiKeys({ generatedAt: '', status: 'searching', candidates: [], validKeys: [] });
-        console.log(`📄 ${API_KEYS_PATH} erstellt — wird laufend aktualisiert\n`);
+        console.log(`📄 ${API_KEYS_PATH} created — updated continuously\n`);
     }
 
     // ── Phase 1: GitHub-Suche ──────────────────────────────────────────────
@@ -354,14 +354,14 @@ async function main(): Promise<void> {
                     repository: { full_name: item.repo },
                 });
             }
-            spinner.succeed(`"${query}" — ${cached.length} Dateien (Cache)`);
+            spinner.succeed(`"${query}" — ${cached.length} files (cached)`);
             continue;
         }
 
-        spinner.start(`Suche: "${query}" | Dateien bisher: ${allFiles.size}`);
+        spinner.start(`Searching: "${query}" | Files so far: ${allFiles.size}`);
 
         const results = await searchQuery(query, token, (page, total) => {
-            spinner.text = `Suche: "${query}" | Seite ${page} | ~${total} Treffer | Dateien: ${allFiles.size}`;
+            spinner.text = `Searching: "${query}" | Page ${page} | ~${total} hits | Files: ${allFiles.size}`;
         });
 
         for (const [url, item] of results) allFiles.set(url, item);
@@ -374,7 +374,7 @@ async function main(): Promise<void> {
         }));
         saveCache(cache);
 
-        spinner.succeed(`"${query}" — ${results.size} Dateien gefunden`);
+        spinner.succeed(`"${query}" — ${results.size} files found`);
         await sleep(INTER_REQUEST_DELAY_MS);
     }
 
@@ -394,7 +394,7 @@ async function main(): Promise<void> {
         }
     }
     if (cachedKeyCount > 0) {
-        console.log(`  ${Object.keys(cache.processedFiles).length} Dateien aus Cache geladen (${cachedKeyCount} Keys)\n`);
+        console.log(`  ${Object.keys(cache.processedFiles).length} files loaded from cache (${cachedKeyCount} keys)\n`);
     }
 
     for (const [htmlUrl, item] of allFiles) {
@@ -404,7 +404,7 @@ async function main(): Promise<void> {
         if (cache.processedFiles[htmlUrl] !== undefined) continue;
 
         spinner.start(
-            `Lade ${fileIndex}/${allFiles.size}: ${item.repository.full_name}/${item.path}` +
+            `Fetching ${fileIndex}/${allFiles.size}: ${item.repository.full_name}/${item.path}` +
             ` | Keys: ${allFoundKeys.length}`
         );
 
@@ -429,9 +429,9 @@ async function main(): Promise<void> {
         }
     }
 
-    spinner.succeed(`${allFiles.size} Dateien verarbeitet — ${allFoundKeys.length} Kandidaten`);
+    spinner.succeed(`${allFiles.size} files processed — ${allFoundKeys.length} candidates`);
 
-    // Deduplizieren
+    // Deduplicate
     const seen = new Set<string>();
     const unique = allFoundKeys.filter((k) => {
         const id = `${k.repo}|${k.filePath}|${k.key}`;
@@ -442,7 +442,7 @@ async function main(): Promise<void> {
 
     if (unique.length > 0) {
         const col = (s: string, w: number) => s.slice(0, w).padEnd(w);
-        console.log('\n' + col('REPO', 35) + col('DATEI', 30) + col('ZEILE', 6) + col('KEY...', 12) + 'KONTEXT');
+        console.log('\n' + col('REPO', 35) + col('FILE', 30) + col('LINE', 6) + col('KEY...', 12) + 'CONTEXT');
         console.log('─'.repeat(100));
         for (const k of unique) {
             console.log(col(k.repo, 35) + col(k.filePath, 30) + col(String(k.line), 6) + col(k.key.slice(0, 8) + '...', 12) + k.context.slice(0, 40));
@@ -451,7 +451,7 @@ async function main(): Promise<void> {
 
     // ── Phase 3: Validierung ───────────────────────────────────────────────
     const uniqueKeyStrings = [...new Set(unique.map((k) => k.key))];
-    console.log(`\nValidiere ${uniqueKeyStrings.length} einzigartige Key(s) gegen TinyPNG API...`);
+    console.log(`\nValidating ${uniqueKeyStrings.length} unique key(s) against TinyPNG API...`);
 
     const validKeys: string[] = [];
     const allCandidates = [...new Set(allFoundKeys.map((k) => k.key))];
@@ -469,8 +469,8 @@ async function main(): Promise<void> {
         }
 
         spinner.start(
-            `Validiere ${i + 1}/${uniqueKeyStrings.length}: ${key.slice(0, 8)}...` +
-            ` | Valide: ${validKeys.length}`
+            `Validating ${i + 1}/${uniqueKeyStrings.length}: ${key.slice(0, 8)}...` +
+            ` | Valid: ${validKeys.length}`
         );
 
         const result = await validateKey(key);
@@ -491,19 +491,19 @@ async function main(): Promise<void> {
     // Finaler Stand
     writeApiKeys({ generatedAt: '', status: 'complete', candidates: allCandidates, validKeys });
 
-    // Cache nach erfolgreichem Abschluss löschen
+    // Delete cache on successful completion
     try { fs.unlinkSync(CACHE_PATH); } catch { /* ignore */ }
 
-    console.log(`\n${validKeys.length} Key(s) mit verbleibendem Quota → ${API_KEYS_PATH} aktualisiert`);
+    console.log(`\n${validKeys.length} key(s) with remaining quota → ${API_KEYS_PATH} updated`);
 
     fs.writeFileSync(
         'leaked-keys-report.json',
         JSON.stringify({ scannedAt: new Date().toISOString(), totalCandidates: unique.length, keys: unique }, null, 2)
     );
-    console.log('Vollständiger Bericht → leaked-keys-report.json');
+    console.log('Full report → leaked-keys-report.json');
 }
 
 main().catch((err) => {
-    console.error('Fataler Fehler:', err);
+    console.error('Fatal error:', err);
     process.exit(1);
 });
