@@ -403,10 +403,7 @@ async function main(): Promise<void> {
         // Resume: file already processed
         if (cache.processedFiles[htmlUrl] !== undefined) continue;
 
-        spinner.start(
-            `Fetching ${fileIndex}/${allFiles.size}: ${item.repository.full_name}/${item.path}` +
-            ` | Keys: ${allFoundKeys.length}`
-        );
+        spinner.start(`Fetching ${fileIndex}/${allFiles.size} | Keys: ${allFoundKeys.length}`);
 
         const rawUrl  = toRawUrl(htmlUrl);
         const content = await fetchFileContent(rawUrl, token);
