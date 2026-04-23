@@ -11,6 +11,10 @@
 5. Local state and remote must always be 100% in sync
 
 ## Test Scripts
-- `npm test` — run the full test suite (vitest)
-- `npm run coverage` — run tests with v8 coverage report (80% threshold)
+- `npm test` — run the full test suite (node:test)
+- `npm run coverage` — run tests with coverage report
 - `npm run test:watch` — interactive watch mode during development
+
+## Language
+- Code, comments, and documentation: English
+- Conversation with the user: German
