@@ -81,7 +81,7 @@ async function validateKey(key: string): Promise<'valid' | 'exhausted' | 'invali
             method: 'POST',
             headers: {
                 Authorization: 'Basic ' + Buffer.from('api:' + key).toString('base64'),
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'image/png',
             },
             body: TINY_PNG,
         });
