@@ -46,11 +46,6 @@ const TINYPNG_ENDPOINT    = 'https://api.tinypng.com/shrink';
 const VALIDATION_DELAY_MS = 500;
 const API_KEYS_PATH       = 'api-keys.json';
 
-const TINY_PNG = Buffer.from(
-    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwADhQGAWjR9awAAAABJRU5ErkJggg==',
-    'base64'
-);
-
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -77,14 +72,17 @@ function writeApiKeys(data: ApiKeysFile): void {
 
 async function validateKey(key: string): Promise<'valid' | 'exhausted' | 'invalid'> {
     try {
+        // Empty body — TinyPNG checks in order: auth → quota → image decode.
+        // 201 = valid + compressed, 400 = valid + quota OK (image just empty),
+        // 429 = exhausted, 401 = invalid key.
         const response = await fetch(TINYPNG_ENDPOINT, {
             method: 'POST',
             headers: {
                 Authorization: 'Basic ' + Buffer.from('api:' + key).toString('base64'),
             },
-            body: TINY_PNG,
+            body: Buffer.alloc(0),
         });
-        if (response.status === 201) return 'valid';
+        if (response.status === 201 || response.status === 400) return 'valid';
         if (response.status === 429) return 'exhausted';
         return 'invalid';
     } catch { return 'invalid'; }
