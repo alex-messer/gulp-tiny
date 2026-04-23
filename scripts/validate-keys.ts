@@ -143,7 +143,7 @@ async function main(): Promise<void> {
         await sleep(VALIDATION_DELAY_MS);
     }
 
-    writeApiKeys({ ...existing, status: 'complete', candidates, validKeys });
+    writeApiKeys({ ...existing, status: 'complete', candidates: [], validKeys });
 
     console.log('\n──────────────────────────────────────');
     console.log(`Valid (quota remaining): ${validKeys.length - alreadyValid.size}`);
