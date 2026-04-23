@@ -11,9 +11,9 @@
 		"clean": "rm -rf dist",
 		"tiny": "gulp tiny",
 		"default": "gulp",
-		"test": "vitest run",
-		"test:watch": "vitest",
-		"coverage": "vitest run --coverage",
+		"test": "node --experimental-strip-types --test 'src/**/*.test.ts'",
+		"test:watch": "node --experimental-strip-types --test --watch 'src/**/*.test.ts'",
+		"coverage": "node --experimental-strip-types --experimental-test-coverage --test 'src/**/*.test.ts'",
 		"search-keys": "npx tsc -p tsconfig.scripts.json && node dist-scripts/search-leaked-keys.js",
 		"validate-keys": "npx tsc -p tsconfig.scripts.json && node dist-scripts/validate-keys.js",
 		"prepare": "husky",
@@ -61,12 +61,10 @@
 		"@types/fancy-log": "^2.0.2",
 		"@types/node": "^25.6.0",
 		"@types/vinyl": "^2.0.12",
-		"@vitest/coverage-v8": "^4.1.5",
 		"dotenv": "^17.4.2",
 		"gulp": "^5.0.1",
 		"husky": "^9.1.7",
 		"typescript": "^6.0.3",
-		"vinyl": "^3.0.1",
-		"vitest": "^4.1.5"
+		"vinyl": "^3.0.1"
 	}
 }

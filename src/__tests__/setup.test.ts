@@ -1,7 +1,8 @@
-import { describe, it, expect } from "vitest";
+import { describe, it } from "node:test";
+import assert from "node:assert/strict";
 
-describe("vitest setup", () => {
+describe("node:test setup", () => {
   it("runs", () => {
-    expect(true).toBe(true);
+    assert.equal(true, true);
   });
 });
