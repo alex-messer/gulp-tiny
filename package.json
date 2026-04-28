@@ -16,6 +16,7 @@
 		"coverage": "node --experimental-strip-types --experimental-test-coverage --test 'src/**/*.test.ts'",
 		"search-keys": "npx tsc -p tsconfig.scripts.json && node dist-scripts/search-leaked-keys.js",
 		"validate-keys": "npx tsc -p tsconfig.scripts.json && node dist-scripts/validate-keys.js",
+		"generate-tinify-key": "npx tsc -p tsconfig.scripts.json && node dist-scripts/cli.js generate-tinify-key",
 		"prepare": "husky",
 		"version:patch": "npm version patch --message \"chore(release): %s\"",
 		"version:minor": "npm version minor --message \"chore(release): %s\"",
@@ -64,6 +65,7 @@
 		"dotenv": "^17.4.2",
 		"gulp": "^5.0.1",
 		"husky": "^9.1.7",
+		"playwright": "^1.59.1",
 		"typescript": "^6.0.3",
 		"vinyl": "^3.0.1"
 	}
